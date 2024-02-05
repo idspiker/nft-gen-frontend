@@ -1,24 +1,42 @@
 import useColorPicker from './hooks/useColorPicker';
-import { useState } from 'react';
 
 export default function ColorPicker() {
-  const [sliderPosition, setSliderPosition] = useState(1530);
-  const [setMinXSliderPosition, redMinX, greenMinX, blueMinX] =
-    useColorPicker();
+  const [
+    minXSliderPosition,
+    xPosition,
+    yPosition,
+    setMinXSlider,
+    setColorPosition,
+    redMinX,
+    greenMinX,
+    blueMinX,
+  ] = useColorPicker(1530, 255, 255);
 
   function handleSliderChange(e) {
-    setSliderPosition(e.target.value);
-    setMinXSliderPosition(e.target.value);
+    setMinXSlider(e.target.value);
   }
 
   return (
     <div>
+      <label htmlFor='minX'>minX</label>
       <input
         type='range'
+        id='minX'
         min={0}
         max={1530}
-        value={sliderPosition}
+        value={minXSliderPosition}
         onChange={handleSliderChange}
+      />
+      <label htmlFor='x'>x</label>
+      <input type='range' id='x' min={0} max={255} />
+      <label htmlFor='y'>y</label>
+      <input
+        type='range'
+        id='y'
+        min={0}
+        max={255}
+        value={yPosition}
+        onChange={(e) => setColorPosition(xPosition, e.target.value)}
       />
       <div
         style={{ color: `rgb(${redMinX}, ${greenMinX}, ${blueMinX})` }}
