@@ -5,6 +5,7 @@ import { useState } from 'react';
 import Panel from './Panel';
 import PaletteFileManager from './PaletteFileManager';
 import ColorPicker from './ColorPicker';
+import TwoDimensionalSlider from './TwoDimensionalSlider';
 
 export default function TemplateManager() {
   const [placeholderColors, setPlaceholderColors] = useState(
@@ -63,6 +64,7 @@ export default function TemplateManager() {
         />
       </Panel>
       <ColorPicker />
+      {/* <TwoDimensionalSlider /> */}
     </div>
   );
 }

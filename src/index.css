@@ -372,6 +372,7 @@ h4 {
 
 .color-text-field:hover {
   background-color: rgba(255, 255, 255, 0.25);
+  color: rgb(142, 142, 142);
 }
 
 /* Old styles */
@@ -510,4 +511,31 @@ input {
 
 .image-preview {
   width: 4rem;
+}
+
+.color-picker-container {
+  display: flex;
+  flex-direction: column;
+  width: 16rem;
+  background-color: #313131;
+}
+
+.color-picker-header {
+  width: 100%;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.two-dimensional-slider {
+  width: 13rem;
+  height: 10rem;
+  background-color: blue;
+}
+
+.two-dimensional-slider-point {
+  width: 0.75rem;
+  height: 0.75rem;
+  background-color: transparent;
+  border: 1px solid white;
+  border-radius: 50%;
 }

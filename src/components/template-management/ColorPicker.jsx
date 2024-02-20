@@ -1,34 +1,27 @@
 import useColorPicker from './hooks/useColorPicker';
 
 export default function ColorPicker() {
-  const [
-    minXSliderPosition,
-    xPosition,
-    yPosition,
-    setMinXSlider,
-    setColorPosition,
-    redMinX,
-    greenMinX,
-    blueMinX,
-  ] = useColorPicker(1530, 255, 255);
-
-  function handleSliderChange(e) {
-    setMinXSlider(e.target.value);
-  }
+  const [sliderPosition, xPosition, yPosition, red, green, blue, setColor] =
+    useColorPicker(1530, 255, 255);
 
   return (
-    <div>
-      <label htmlFor='minX'>minX</label>
+    <div className='color-picker-container'>
+      <div
+        className='color-picker-header'
+        style={{
+          backgroundColor: `rgb(${red}, ${green}, ${blue})`,
+          color: red + blue + green < 250 ? 'white' : 'black',
+        }}
+      >{`rgb(${red}, ${green}, ${blue})`}</div>
+      <label htmlFor='x'>x</label>
       <input
         type='range'
-        id='minX'
+        id='x'
         min={0}
-        max={1530}
-        value={minXSliderPosition}
-        onChange={handleSliderChange}
+        max={255}
+        value={xPosition}
+        onChange={(e) => setColor(sliderPosition, e.target.value, yPosition)}
       />
-      <label htmlFor='x'>x</label>
-      <input type='range' id='x' min={0} max={255} />
       <label htmlFor='y'>y</label>
       <input
         type='range'
@@ -36,11 +29,17 @@ export default function ColorPicker() {
         min={0}
         max={255}
         value={yPosition}
-        onChange={(e) => setColorPosition(xPosition, e.target.value)}
+        onChange={(e) => setColor(sliderPosition, xPosition, e.target.value)}
       />
-      <div
-        style={{ color: `rgb(${redMinX}, ${greenMinX}, ${blueMinX})` }}
-      >{`rgb(${redMinX}, ${greenMinX}, ${blueMinX})`}</div>
+      <label htmlFor='minX'>minX</label>
+      <input
+        type='range'
+        id='minX'
+        min={0}
+        max={1530}
+        value={sliderPosition}
+        onChange={(e) => setColor(e.target.value, xPosition, yPosition)}
+      />
     </div>
   );
 

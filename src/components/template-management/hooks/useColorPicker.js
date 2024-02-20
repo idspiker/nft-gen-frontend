@@ -7,33 +7,28 @@ TODO:
 */
 
 export default function useColorPicker(
-  initialMinSliderPosition,
+  initialSliderPosition,
   initialXPosition,
   initialYPosition
 ) {
-  const [minXSliderPosition, setMinXSliderPosition] = useState(
-    initialMinSliderPosition
-  );
+  const [sliderPosition, setSliderPosition] = useState(initialSliderPosition);
   const [xPosition, setXPosition] = useState(initialXPosition);
   const [yPosition, setYPosition] = useState(initialYPosition);
 
-  const [redMinX, setRedMinX] = useState(255);
-  const [greenMinX, setGreenMinX] = useState(0);
-  const [blueMinX, setBlueMinX] = useState(0);
-
+  // Make this be calculated from initial positions
   const [red, setRed] = useState(255);
-  const [blue, setBlue] = useState(255);
-  const [green, setGreen] = useState(255);
+  const [blue, setBlue] = useState(0);
+  const [green, setGreen] = useState(0);
 
-  const [constantValMax, setConstantValMax] = useState(initialYPosition);
+  function setColor(sliderPosition, xPosition, yPosition) {
+    const constantValMax = 255;
 
-  function setMinXSlider(sliderPosition /* Number between 0 and 1530 */) {
     const numPositions = constantValMax * 6;
     const convertedSliderPosition = Math.floor(
       (sliderPosition / 1530) * numPositions
     );
 
-    const rgb = [0, 0, 0];
+    let rgb = [0, 0, 0];
     const sectorNumber = Math.floor(convertedSliderPosition / constantValMax);
     const sectorIsEven = sectorNumber % 2 === 0;
 
@@ -61,31 +56,23 @@ export default function useColorPicker(
     rgb[changeIndex] = newValue;
     rgb[constantIndex] = constantValMax;
 
-    setRedMinX(rgb[0]);
-    setGreenMinX(rgb[1]);
-    setBlueMinX(rgb[2]);
-    setMinXSliderPosition(sliderPosition);
+    rgb = rgb.map((shadeAmount, index) => {
+      if (index === constantIndex) return shadeAmount;
+
+      return Math.round(
+        (255 - shadeAmount) * ((255 - xPosition) / 255) + shadeAmount
+      );
+    });
+
+    rgb = rgb.map((shadeAmount) => Math.round(shadeAmount * (yPosition / 255)));
+
+    setSliderPosition(sliderPosition);
+    setXPosition(xPosition);
+    setYPosition(yPosition);
+    setRed(rgb[0]);
+    setBlue(rgb[1]);
+    setGreen(rgb[2]);
   }
 
-  function setColorPosition(x, y) {
-    // y position handles the max values when related to the slider (not always 255)
-    // x position handles the min values of the two values not effected by minX
-
-    setXPosition(x);
-
-    setYPosition(y);
-    setConstantValMax(y);
-    setMinXSlider(minXSliderPosition);
-  }
-
-  return [
-    minXSliderPosition,
-    xPosition,
-    yPosition,
-    setMinXSlider,
-    setColorPosition,
-    redMinX,
-    greenMinX,
-    blueMinX,
-  ];
+  return [sliderPosition, xPosition, yPosition, red, green, blue, setColor];
 }
